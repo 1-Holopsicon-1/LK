@@ -25,6 +25,7 @@ import {
     ApplicationSocialAgencies,
     ApplicationsPage,
     ArbitraryRequestPage,
+    CardRequestPage,
     ChangingPersonalData,
     ClarificationOfPassportDataApplication,
     DormitoryPage,
@@ -80,6 +81,7 @@ export const studentPages = {
     'helpful-information': HelpfulInformation,
     'application-for-superior-room': ApplicationForSuperiorRoom,
     'all-teachers': AllTeachersPage,
+    'card-request': CardRequestPage,
 }
 
 export const hiddenStudentPages = {

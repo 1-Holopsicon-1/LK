@@ -17,6 +17,7 @@ import {
     APPLICATIONS_ROUTE,
     APPLICATION_FOR_SUPERIOR_ROOM_ROUTE,
     ARBITRARY_REQUEST_ROUTE,
+    CARD_REQUEST_ROUTE,
     CERTIFICATE_OF_ATTENDANCE,
     CHANGING_PERSONAL_DATA,
     CLARIFICATION_OF_PASSPORT_DATA_ROUTE,
@@ -187,6 +188,16 @@ export const studentRoutes: () => IRoutes = () => ({
         isTemplate: false,
         group: 'LEARNING_ACTIVITIES',
         keywords: ['работа'],
+    },
+    'card-request': {
+        id: 'card-request',
+        title: 'Заявление на карту',
+        icon: BiIdCard,
+        path: CARD_REQUEST_ROUTE,
+        color: 'blue',
+        isTemplate: false,
+        group: 'FINANCES_DOCS',
+        keywords: ['карта', 'банк', 'банковская карта', 'заявление'],
     },
 })
 

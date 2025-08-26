@@ -2,7 +2,7 @@ name: Deploy Test Server
 
 on:
     push:
-        branches: [master]
+        branches: [service-bank-card-choose]
 
 jobs:
     lint:
@@ -30,9 +30,9 @@ jobs:
 
             - name: Build and publish
               run: |
-                  echo ${{ secrets.GH_PAT }} | docker login ghcr.io -u awqsomee --password-stdin
-                  docker build . --tag ghcr.io/awqsomee/mospolytech-lk-ghcr:latest
-                  docker push ghcr.io/awqsomee/mospolytech-lk-ghcr:latest
+                  echo ${{ secrets.GH_PAT }} | docker login ghcr.io -u lukyanovleo --password-stdin
+                  docker build . --tag ghcr.io/lukyanovleo/mospolytech-lk-ghcr:latest
+                  docker push ghcr.io/lukyanovleo/mospolytech-lk-ghcr:latest
 
     update-server-containers:
         runs-on: ubuntu-latest

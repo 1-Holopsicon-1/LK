@@ -1,27 +1,27 @@
 version: '3.8'
 services:
   web:
-    image: ghcr.io/awqsomee/mospolytech-lk-ghcr:latest
+    image: ghcr.io/lukyanovleo/mospolytech-lk-ghcr:latest
     ports:
       - "80:80"
       - "4000:80"
-  feat:
-    image: ghcr.io/awqsomee/mospolytech-lk-ghcr:feat4001
-    ports:
-      - "4001:80"
-  feat4002:
-    image: ghcr.io/awqsomee/mospolytech-lk-ghcr:feat4002
-    ports:
-      - "4002:80"
-  feat4003:
-    image: ghcr.io/awqsomee/mospolytech-lk-ghcr:feat4003
-    ports:
-      - "4003:80"
-  feat4004:
-    image: ghcr.io/awqsomee/mospolytech-lk-ghcr:feat4004
-    ports:
-      - "4004:80"
-  feat4005:
-    image: ghcr.io/awqsomee/mospolytech-lk-ghcr:feat4005
-    ports:
-      - "4005:80"
+  # feat:
+  #   image: ghcr.io/lukyanovleo/mospolytech-lk-ghcr:feat4001
+  #   ports:
+  #     - "4001:80"
+  # feat4002:
+  #   image: ghcr.io/lukyanovleo/mospolytech-lk-ghcr:feat4002
+  #   ports:
+  #     - "4002:80"
+  # feat4003:
+  #   image: ghcr.io/lukyanovleo/mospolytech-lk-ghcr:feat4003
+  #   ports:
+  #     - "4003:80"
+  # feat4004:
+  #   image: ghcr.io/lukyanovleo/mospolytech-lk-ghcr:feat4004
+  #   ports:
+  #     - "4004:80"
+  # feat4005:
+  #   image: ghcr.io/lukyanovleo/mospolytech-lk-ghcr:feat4005
+  #   ports:
+  #     - "4005:80"

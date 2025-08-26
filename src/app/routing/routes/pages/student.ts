@@ -2,6 +2,7 @@ import { lazy } from 'react'
 
 export const ApplicationForSuperiorRoom = lazy(() => import('@pages/application-for-superior-room'))
 export const AcadPerformance = lazy(() => import('@pages/acad-performance'))
+export const CardRequestPage = lazy(() => import('@pages/card-request'))
 export const DormitoryPage = lazy(() => import('@pages/dormitory'))
 export const ClarificationOfPassportDataApplication = lazy(
     () => import('@pages/applications/pages/multifunctional-center/clarification-of-passport-data'),

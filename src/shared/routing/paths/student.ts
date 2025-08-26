@@ -5,6 +5,7 @@ export const JOB_ROUTE = '/job'
 export const APPLICATION_FOR_SUPERIOR_ROOM_ROUTE = '/application-for-superior-room'
 export const ACAD_PERFORMANCE_ROUTE = '/acad-performance'
 export const STUDENT_EMPLOYMENT_ROUTE = '/student-employment'
+export const CARD_REQUEST_ROUTE = '/card-request'
 
 //hidden routes
 export const CLARIFICATION_OF_PASSPORT_DATA_ROUTE = APPLICATIONS_ROUTE + '/clarification-of-passport-data'
