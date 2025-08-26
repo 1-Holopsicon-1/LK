@@ -55,7 +55,7 @@ jobs:
               run: sudo openvpn --config "config.ovpn" --log "vpn.log" --daemon
 
             - name: Wait for a VPN connection
-              timeout-minutes: 1
+              timeout-minutes: 5
               run: until ping -c1 ${{ secrets.TEST_HOST_IP }}; do sleep 2; done
 
             - name: 'Run deploy on server'
