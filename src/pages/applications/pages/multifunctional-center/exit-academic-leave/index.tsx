@@ -22,7 +22,7 @@ const ApplicationExitAcademicLeave = () => {
     const [loading, setLoading] = useState(false)
     const [specialFieldsName, setSpecialFieldsName] = useState<SpecialFieldsNameConfig>({})
     const isDone = completed ?? false
-    const { 
+    const {
         data: { dataUserApplication },
     } = applicationsModel.selectors.useApplications()
 
