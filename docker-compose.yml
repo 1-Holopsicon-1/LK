@@ -5,6 +5,7 @@ services:
     ports:
       - "80:80"
       - "4000:80"
+    pull_policy: always
   feat:
     image: ghcr.io/lukyanovleo/mospolytech-lk-ghcr:feat4001
     ports:
