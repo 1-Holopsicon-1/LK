@@ -31,7 +31,7 @@ jobs:
             - name: Build and publish
               run: |
                   echo ${{ secrets.GH_PAT }} | docker login ghcr.io -u lukyanovleo --password-stdin
-                  docker build . --tag ghcr.io/lukyanovleo/mospolytech-lk-ghcr:latest --no-cache
+                  docker build . --tag ghcr.io/lukyanovleo/mospolytech-lk-ghcr:latest
                   docker push ghcr.io/lukyanovleo/mospolytech-lk-ghcr:latest
 
     update-server-containers:
@@ -67,7 +67,7 @@ jobs:
                   script: |
                       cd client-app/LK
                       echo ${{ secrets.TEST_SERVER_PASSWORD }} | sudo -S docker compose -p web pull
-                      echo ${{ secrets.TEST_SERVER_PASSWORD }} | sudo -S docker compose -p web up --force-recreate -d
+                      echo ${{ secrets.TEST_SERVER_PASSWORD }} | sudo -S docker compose -p web up -d
             - name: Kill VPN connection
               if: always()
               run: |
