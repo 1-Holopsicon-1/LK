@@ -1,5 +1,6 @@
 export interface CardRequestData {
     bank: string
+    additionalBank?: string
     status: 'processing' | 'ready' | null
     created_at?: string
     updated_at?: string
@@ -7,6 +8,7 @@ export interface CardRequestData {
 
 export interface CardRequestSubmitData {
     bank: string
+    additionalBank?: string
 }
 
 export interface CardRequestResponse {
