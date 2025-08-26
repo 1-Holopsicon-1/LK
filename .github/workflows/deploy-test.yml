@@ -31,7 +31,7 @@ jobs:
             - name: Build and publish
               run: |
                   echo ${{ secrets.GH_PAT }} | docker login ghcr.io -u lukyanovleo --password-stdin
-                  docker build . --tag ghcr.io/lukyanovleo/mospolytech-lk-ghcr:latest
+                  docker build . --tag ghcr.io/lukyanovleo/mospolytech-lk-ghcr:latest --no-cache
                   docker push ghcr.io/lukyanovleo/mospolytech-lk-ghcr:latest
 
     update-server-containers:
