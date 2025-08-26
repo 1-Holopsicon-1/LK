@@ -2,7 +2,7 @@ name: Deploy Test Server
 
 on:
     push:
-        branches: [service-bank-card-choose]
+        branches: [master]
 
 jobs:
     lint:
