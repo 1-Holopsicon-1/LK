@@ -75,7 +75,7 @@ export const getForm = (dataUserApplication: UserApplication): IInputArea => {
                 value: '',
                 specialType: 'medicalReport',
                 editable: true,
-                required: true,
+                required: true, 
             },
             {
                 title: '№:',
