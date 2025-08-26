@@ -6,21 +6,22 @@ export class CardRequestMockApi {
 
     static async getCardRequest(): Promise<CardRequestData | null> {
         // Имитируем задержку сети
-        await new Promise(resolve => setTimeout(resolve, 500))
+        await new Promise((resolve) => setTimeout(resolve, 500))
 
         return this.storage
     }
 
     static async submitCardRequest(data: CardRequestSubmitData): Promise<CardRequestResponse> {
         // Имитируем задержку сети
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        await new Promise((resolve) => setTimeout(resolve, 1000))
 
         // Создаем новое заявление
         this.storage = {
             bank: data.bank,
+            additionalBank: data.additionalBank,
             status: 'processing',
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
+            updated_at: new Date().toISOString(),
         }
 
         // Имитируем смену статуса на "ready" через 5 секунд
@@ -34,13 +35,13 @@ export class CardRequestMockApi {
         return {
             success: true,
             data: this.storage,
-            message: 'Заявление успешно подано'
+            message: 'Заявление успешно подано',
         }
     }
 
     static async downloadDocument(): Promise<void> {
         // Имитируем задержку сети
-        await new Promise(resolve => setTimeout(resolve, 500))
+        await new Promise((resolve) => setTimeout(resolve, 500))
 
         if (!this.storage || this.storage.status !== 'ready') {
             throw new Error('Документ не готов для скачивания')
@@ -130,5 +131,5 @@ startxref
 export const cardRequestMockApi = {
     getCardRequest: () => CardRequestMockApi.getCardRequest(),
     submitCardRequest: (data: CardRequestSubmitData) => CardRequestMockApi.submitCardRequest(data),
-    downloadDocument: () => CardRequestMockApi.downloadDocument()
+    downloadDocument: () => CardRequestMockApi.downloadDocument(),
 }
