@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { userModel } from '@shared/session'
+import { Error } from '@shared/ui/atoms'
 import { Button } from '@shared/ui/button'
 import { Message } from '@shared/ui/message'
 import PageBlock from '@shared/ui/page-block'
@@ -53,7 +54,6 @@ const FormCard = styled.div`
 `
 
 const ApplicationText = styled.div`
-    background: var(--theme-mild);
     border-radius: var(--brLight);
     padding: 20px;
     margin: 16px 0;
@@ -227,15 +227,17 @@ const CardRequestForm: React.FC = () => {
     const canSubmitForm = isFormAvailable()
 
     // Заглушка блок по почте
-    /*
-    if (
-        user?.email !== 'l.m.lukyanov@mospolytech.ru' ||
-        user?.email !== 'a.s.zhuplev@mospolytech.ru' ||
-        user?.email !== 'mfnbrx@gmail.com'
-    ) {
+    const allowedEmails = [
+        'l.m.lukyanov@mospolytech.ru',
+        'a.s.zhuplev@mospolytech.ru',
+        'mfnbrx@gmail.com',
+        't.t.testov@mospolytech.ru',
+    ]
+
+    if (user?.email && !allowedEmails.includes(user.email)) {
         return <Error text={'Данный раздел находится в разработке или не доступен для вас'} />
     }
- */
+
     useEffect(() => {
         getRequest()
     }, [])
@@ -285,20 +287,6 @@ const CardRequestForm: React.FC = () => {
     const getSelectedBankName = () => {
         const bank = BANK_OPTIONS.find((b) => b.id === cardRequest?.bank)
         return bank?.name || cardRequest?.bank
-    }
-
-    const getSelectedBankInfo = () => {
-        if (!cardRequest?.bank) return null
-
-        const mainBank = BANK_OPTIONS.find((b) => b.id === cardRequest.bank)
-        const additionalBank = cardRequest.additionalBank
-            ? BANK_OPTIONS.find((b) => b.id === cardRequest.additionalBank)
-            : null
-
-        return {
-            main: mainBank,
-            additional: additionalBank,
-        }
     }
 
     // Функция для проверки наличия дополнительного банка
@@ -395,16 +383,17 @@ const CardRequestForm: React.FC = () => {
                             {additionalBank && (
                                 <div className="additional-request">
                                     Также прошу отправить заявку на оформление дополнительной банковской карты НСПК
-                                    «МИР» банка {getBankName(additionalBank)}
-                                    {getBankIcon(getBankName(additionalBank))}
+                                    «МИР» банка {getBankIcon(additionalBank)} {getBankName(additionalBank)}
                                 </div>
                             )}
 
                             <div className="consent-text">
                                 Подтверждаю предоставленное мною при приеме на обучение в Московский Политех согласие на
                                 обработку персональных данных, в том числе их передачу в банк Банк ВТБ (ПАО)
-                                {additionalBank ? ` и ${getBankName(additionalBank)}` : ''} в целях оформления
-                                банковской карты.
+                                {additionalBank
+                                    ? ` и ${getBankIcon(additionalBank)} ${getBankName(additionalBank)}`
+                                    : ''}{' '}
+                                в целях оформления банковской карты.
                             </div>
                         </ApplicationText>
 
