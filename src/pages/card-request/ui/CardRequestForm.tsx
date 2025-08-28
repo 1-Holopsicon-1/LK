@@ -9,24 +9,13 @@ import { Message } from '@shared/ui/message'
 import PageBlock from '@shared/ui/page-block'
 import { Title } from '@shared/ui/title'
 
-import { BANK_OPTIONS, type BankOption } from '../api/types'
+import { BANK_OPTIONS, type BankOption, cardRequestUtils } from '../api/types'
 import { cardRequestModel } from '../model'
 
 // Иконки банков (emoji для простоты, можно заменить на SVG)
-const getBankIcon = (bankId: string) => {
-    const icons: Record<string, string> = {
-        sberbank: '🟢',
-        vtb: '🔵',
-        gazprombank: '🔷',
-        alfabank: '🔴',
-    }
-    return icons[bankId] || '🏦'
-}
-
-const getBankName = (bankId: string) => {
-    const bank = BANK_OPTIONS.find((b) => b.id === bankId)
-    return bank?.name || bankId
-}
+// Используем утилиты из types
+const getBankIcon = cardRequestUtils.getBankIcon
+const getBankName = cardRequestUtils.getBankName
 
 const CardRequestWrapper = styled.div`
     display: flex;
@@ -46,8 +35,8 @@ const FormCard = styled.div`
     padding: 24px;
 
     border-radius: var(--brLight);
-    border: 1px solid var(--theme-mild-opposite);
-
+    border: 0% solid var(--theme-mild-opposite);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
     @media (max-width: 768px) {
         padding: 16px;
     }
@@ -74,7 +63,7 @@ const ApplicationText = styled.div`
         padding: 12px;
         background: var(--theme-2);
         border-radius: var(--brLight);
-        border-left: 4px solid var(--reallyBlue);
+        border-left: 1px solid var(--reallyBlue);
     }
 
     .consent-text {
@@ -100,7 +89,7 @@ const AdditionalBankSection = styled.div`
     padding: 20px;
     background: var(--block-content);
     border-radius: var(--brLight);
-    border: 1px solid var(--theme-mild-opposite);
+    background: rgba(186, 192, 255, 0.09);
 `
 
 const BankOption = styled.div<{ selected: boolean }>`
@@ -110,7 +99,8 @@ const BankOption = styled.div<{ selected: boolean }>`
     justify-content: center;
     padding: 20px 12px;
     border-radius: var(--brLight);
-    border: 2px solid ${({ selected }) => (selected ? 'var(--reallyBlue)' : 'var(--theme-mild-opposite)')};
+    border: 0 solid ${({ selected }) => (selected ? 'var(--reallyBlue)' : 'var(--theme-mild-opposite)')};
+    background: shadow;
     background: ${({ selected }) => (selected ? 'var(--reallyBlue)' : 'var(--block-content)')};
     color: ${({ selected }) => (selected ? 'white' : 'var(--text)')};
     cursor: pointer;
@@ -120,7 +110,7 @@ const BankOption = styled.div<{ selected: boolean }>`
 
     &:hover {
         border-color: var(--reallyBlue);
-        background: ${({ selected }) => (selected ? 'var(--reallyBlue)' : 'var(--theme-mild)')};
+        background: ${({ selected }) => (selected ? 'var(--reallyBlue)' : 'var(--block-content)')};
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
@@ -203,11 +193,12 @@ const ButtonGroup = styled.div`
     gap: 12px;
     justify-content: flex-start;
     flex-wrap: wrap;
-
+    width: 100%;
     @media (max-width: 768px) {
         flex-direction: column;
     }
 `
+
 const CardRequestForm: React.FC = () => {
     const { cardRequest, isLoading, error, submitRequest, downloadDocument, getRequest } =
         cardRequestModel.selectors.useCardRequest()
@@ -248,9 +239,14 @@ const CardRequestForm: React.FC = () => {
 
     const handleSubmit = () => {
         submitRequest({
-            bank: 'vtb', // Основной банк всегда ВТБ
+            accept: true,
             additionalBank: additionalBank,
         })
+
+        // Обновляем данные через секунду после отправки
+        setTimeout(() => {
+            getRequest()
+        }, 1000)
     }
 
     const handleDownload = () => {
@@ -258,44 +254,44 @@ const CardRequestForm: React.FC = () => {
     }
 
     const getStatusDisplay = () => {
-        if (!cardRequest?.status) return null
+        if (!cardRequestUtils.hasRequest(cardRequest)) {
+            return null
+        }
 
-        switch (cardRequest.status) {
-            case 'processing':
-                return (
-                    <div className="status-content">
-                        <span className="status-icon" style={{ color: 'var(--orange)', fontSize: '24px' }}>
-                            ⏱️
-                        </span>
-                        <span className="status-text">Заявление обрабатывается</span>
-                    </div>
-                )
-            case 'ready':
-                return (
-                    <div className="status-content">
-                        <span className="status-icon" style={{ color: 'var(--green)', fontSize: '24px' }}>
-                            ✅
-                        </span>
-                        <span className="status-text">Документ готов к скачиванию</span>
-                    </div>
-                )
-            default:
-                return null
+        const isReady = cardRequestUtils.isReady(cardRequest)
+
+        if (isReady) {
+            return (
+                <div className="status-content">
+                    <span className="status-icon" style={{ color: 'var(--green)', fontSize: '24px' }}>
+                        ✅
+                    </span>
+                    <span className="status-text">Документ готов к скачиванию</span>
+                </div>
+            )
+        } else {
+            return (
+                <div className="status-content">
+                    <span className="status-icon" style={{ color: 'var(--orange)', fontSize: '24px' }}>
+                        ⏱️
+                    </span>
+                    <span className="status-text">Заявление обрабатывается</span>
+                </div>
+            )
         }
     }
 
     const getSelectedBankName = () => {
-        const bank = BANK_OPTIONS.find((b) => b.id === cardRequest?.bank)
-        return bank?.name || cardRequest?.bank
+        // Основной банк всегда ВТБ
+        return 'Банк ВТБ (ПАО)'
     }
 
     // Функция для проверки наличия дополнительного банка
     const hasAdditionalBank = () => {
-        return (
+        return Boolean(
             cardRequest?.additionalBank &&
-            cardRequest.additionalBank !== '' &&
-            cardRequest.additionalBank !== null &&
-            cardRequest.additionalBank !== undefined
+                cardRequest.additionalBank !== '' &&
+                cardRequest.additionalBank.trim() !== '',
         )
     }
 
@@ -309,7 +305,7 @@ const CardRequestForm: React.FC = () => {
                 )}
 
                 {/* Статус текущего заявления */}
-                {cardRequest && (
+                {cardRequestUtils.hasRequest(cardRequest) && (cardRequest.file || cardRequest.createdAt) && (
                     <StatusCard>
                         <Title size={4} bottomGap="16px">
                             Статус заявления
@@ -317,32 +313,28 @@ const CardRequestForm: React.FC = () => {
 
                         {getStatusDisplay()}
 
-                        {cardRequest.bank && (
-                            <div style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                                <p style={{ marginBottom: '8px' }}>
-                                    Основной банк:{' '}
-                                    <span style={{ fontSize: '1.2em' }}>{getBankIcon(cardRequest.bank)}</span>{' '}
-                                    <strong>{getSelectedBankName()}</strong>
+                        <div style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                            <p style={{ marginBottom: '8px' }}>
+                                Основной банк: <span style={{ fontSize: '1.2em' }}>{getBankIcon('vtb')}</span>{' '}
+                                <strong>{getSelectedBankName()}</strong>
+                            </p>
+                            {hasAdditionalBank() && (
+                                <p style={{ marginBottom: '0' }}>
+                                    Дополнительный банк:{' '}
+                                    <span style={{ fontSize: '1.2em' }}>{getBankIcon(cardRequest.additionalBank)}</span>{' '}
+                                    <strong>{getBankName(cardRequest.additionalBank)}</strong>
                                 </p>
-                                {hasAdditionalBank() && (
-                                    <p style={{ marginBottom: '0' }}>
-                                        Дополнительный банк:{' '}
-                                        <span style={{ fontSize: '1.2em' }}>
-                                            {getBankIcon(cardRequest.additionalBank)}
-                                        </span>{' '}
-                                        <strong>{getBankName(cardRequest.additionalBank)}</strong>
-                                    </p>
-                                )}
-                            </div>
-                        )}
+                            )}
+                        </div>
 
-                        {cardRequest.status === 'ready' && (
+                        {cardRequestUtils.isReady(cardRequest) && (
                             <Button
                                 onClick={handleDownload}
                                 text="📥 Скачать документ"
-                                background="var(--green)"
+                                background="var(--DarkGreen)"
                                 textColor="white"
                                 loading={isLoading}
+                                width="100%"
                             />
                         )}
                     </StatusCard>
@@ -419,7 +411,7 @@ const CardRequestForm: React.FC = () => {
                         <ButtonGroup>
                             <Button
                                 onClick={handleSubmit}
-                                text="📄 Отправить заявление"
+                                text="Отправить заявление"
                                 background="var(--reallyBlue)"
                                 textColor="white"
                                 loading={isLoading}
@@ -427,7 +419,7 @@ const CardRequestForm: React.FC = () => {
                                 notActiveClickMessage=""
                             />
                         </ButtonGroup>
-
+                        <br />
                         {cardRequest && (
                             <Message type="info" title="Информация">
                                 Подача нового заявления перезапишет предыдущее.
