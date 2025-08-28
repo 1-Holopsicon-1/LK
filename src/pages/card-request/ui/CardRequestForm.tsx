@@ -227,6 +227,8 @@ const CardRequestForm: React.FC = () => {
         return Boolean(
             cardRequest?.additionalBank &&
                 cardRequest.additionalBank !== '' &&
+                cardRequest?.additionalBank !== 'null' &&
+                cardRequest?.additionalBank !== null &&
                 cardRequest.additionalBank.trim() !== '',
         )
     }
