@@ -74,16 +74,13 @@ export const cardRequestApi = {
         }
     },
 
-    // Скачать готовый документ
     downloadDocument: async (): Promise<void> => {
         try {
-            // Сначала получаем данные заявки чтобы взять ссылку на файл
             const cardRequest = await cardRequestApi.getCardRequest()
             if (!cardRequest?.file) {
                 throw new Error('Файл документа не найден')
             }
 
-            // Открываем прямую ссылку для скачивания
             const link = document.createElement('a')
             link.href = cardRequest.file
             link.download = 'used-bank-request.pdf'
