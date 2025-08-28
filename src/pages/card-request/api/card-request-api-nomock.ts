@@ -4,7 +4,7 @@ import getToken from '@shared/lib/token'
 
 import { CardRequestData, CardRequestResponse, CardRequestSubmitData } from './types'
 
-const API_BASE_URL = '/api'
+const API_BASE_URL = '/old/lk_api.php'
 
 export const cardRequestApi = {
     getCardRequest: async (): Promise<CardRequestData | null> => {
