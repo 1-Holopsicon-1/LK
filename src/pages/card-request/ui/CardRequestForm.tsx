@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { FiCheck, FiDownload } from 'react-icons/fi'
 
 import styled from 'styled-components'
 
 import { userModel } from '@shared/session'
-import { Error } from '@shared/ui/atoms'
+import { Error, LinkButton } from '@shared/ui/atoms'
 import { Button } from '@shared/ui/button'
+import Flex from '@shared/ui/flex'
 import { Message } from '@shared/ui/message'
 import PageBlock from '@shared/ui/page-block'
 import { Title } from '@shared/ui/title'
@@ -118,8 +120,6 @@ const BankOption = styled.div<{ selected: boolean }>`
     }
 
     .bank-icon {
-        font-size: 2.5rem;
-        margin-bottom: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -140,7 +140,6 @@ const BankOption = styled.div<{ selected: boolean }>`
         min-height: 100px;
 
         .bank-icon {
-            font-size: 2rem;
             width: 50px;
             height: 50px;
             margin-bottom: 8px;
@@ -157,33 +156,8 @@ const StatusCard = styled.div`
     padding: 24px;
     background: var(--block-content);
     border-radius: var(--brLight);
-    border: 1px solid var(--theme-mild-opposite);
-
-    .status-content {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 16px;
-    }
-
-    .status-icon {
-        font-size: 24px;
-    }
-
-    .status-text {
-        font-size: 16px;
-        font-weight: 500;
-    }
-
-    @media (max-width: 768px) {
-        padding: 16px;
-
-        .status-content {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 8px;
-        }
-    }
+    border: 0px solid var(--theme-mild-opposite);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 `
 
 const ButtonGroup = styled.div`
@@ -198,8 +172,7 @@ const ButtonGroup = styled.div`
 `
 
 const CardRequestForm: React.FC = () => {
-    const { cardRequest, isLoading, error, submitRequest, downloadDocument, getRequest } =
-        cardRequestModel.selectors.useCardRequest()
+    const { cardRequest, isLoading, error, submitRequest, getRequest } = cardRequestModel.selectors.useCardRequest()
     const {
         data: { user },
     } = userModel.selectors.useUser()
@@ -246,38 +219,6 @@ const CardRequestForm: React.FC = () => {
         }, 1000)
     }
 
-    const handleDownload = () => {
-        downloadDocument()
-    }
-
-    const getStatusDisplay = () => {
-        if (!cardRequestUtils.hasRequest(cardRequest)) {
-            return null
-        }
-
-        const isReady = cardRequestUtils.isReady(cardRequest)
-
-        if (isReady) {
-            return (
-                <div className="status-content">
-                    <span className="status-icon" style={{ color: 'var(--green)', fontSize: '24px' }}>
-                        ✅
-                    </span>
-                    <span className="status-text">Документ готов к скачиванию</span>
-                </div>
-            )
-        } else {
-            return (
-                <div className="status-content">
-                    <span className="status-icon" style={{ color: 'var(--orange)', fontSize: '24px' }}>
-                        ⏱️
-                    </span>
-                    <span className="status-text">Заявление обрабатывается</span>
-                </div>
-            )
-        }
-    }
-
     const getSelectedBankName = () => {
         return 'Банк ВТБ (ПАО)'
     }
@@ -306,32 +247,49 @@ const CardRequestForm: React.FC = () => {
                             Статус заявления
                         </Title>
 
-                        {getStatusDisplay()}
-
-                        <div style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                        <div style={{ marginBottom: '24px', color: 'var(--text-secondary)' }}>
                             <p style={{ marginBottom: '8px' }}>
-                                Основной банк: <span style={{ fontSize: '1.2em' }}>{getBankIcon('vtb')}</span>{' '}
+                                Основной банк:{' '}
+                                <img
+                                    src={getBankIcon('vtb')}
+                                    alt="VTB"
+                                    style={{ width: '24px', height: '24px', marginLeft: '8px' }}
+                                />{' '}
                                 <strong>{getSelectedBankName()}</strong>
                             </p>
                             {hasAdditionalBank() && (
                                 <p style={{ marginBottom: '0' }}>
                                     Дополнительный банк:{' '}
-                                    <span style={{ fontSize: '1.2em' }}>{getBankIcon(cardRequest.additionalBank)}</span>{' '}
+                                    <img
+                                        src={getBankIcon(cardRequest.additionalBank)}
+                                        alt={cardRequest.additionalBank}
+                                        style={{ width: '24px', height: '24px', marginLeft: '8px' }}
+                                    />{' '}
                                     <strong>{getBankName(cardRequest.additionalBank)}</strong>
                                 </p>
                             )}
                         </div>
 
-                        {cardRequestUtils.isReady(cardRequest) && (
-                            <Button
-                                onClick={handleDownload}
-                                text="📥 Скачать документ"
-                                background="var(--DarkGreen)"
-                                textColor="white"
-                                loading={isLoading}
-                                width="100%"
+                        <Flex gap="8px">
+                            {cardRequestUtils.isReady(cardRequest) && (
+                                <LinkButton
+                                    href={cardRequest.file || '#'}
+                                    onClick={() => null}
+                                    text="Скачать согласие"
+                                    width="100%"
+                                    minHeight="38px"
+                                    height="38px"
+                                    icon={<FiDownload />}
+                                />
+                            )}
+                            <Message
+                                type={'success'}
+                                icon={<FiCheck />}
+                                title={'Успешно подписано'}
+                                visible={cardRequestUtils.isReady(cardRequest)}
+                                align="center"
                             />
-                        )}
+                        </Flex>
                     </StatusCard>
                 )}
 
@@ -364,23 +322,48 @@ const CardRequestForm: React.FC = () => {
                             <div className="request-text">
                                 Для перечисления причитающихся мне денежных средств (стипендий, материальной поддержки и
                                 других выплат) прошу Вас отправить заявку на оформление банковской карты НСПК «МИР» в
-                                рамках зарплатного проекта с банком {getBankIcon('vtb')} Банк ВТБ (ПАО)
+                                рамках зарплатного проекта с банком{' '}
+                                <img
+                                    src={getBankIcon('vtb')}
+                                    alt="VTB"
+                                    style={{ width: '20px', height: '20px', marginLeft: '4px' }}
+                                />{' '}
+                                Банк ВТБ (ПАО)
                             </div>
 
                             {additionalBank && (
                                 <div className="additional-request">
                                     Также прошу отправить заявку на оформление дополнительной банковской карты НСПК
-                                    «МИР» банка {getBankIcon(additionalBank)} {getBankName(additionalBank)}
+                                    «МИР» банка{'\n'}
+                                    <br />
+                                    <img
+                                        src={getBankIcon(additionalBank)}
+                                        alt={additionalBank}
+                                        style={{ width: '20px', height: '20px', marginLeft: '4px' }}
+                                    />{' '}
+                                    {getBankName(additionalBank)}
                                 </div>
                             )}
 
                             <div className="consent-text">
                                 Подтверждаю предоставленное мною при приеме на обучение в Московский Политех согласие на
-                                обработку персональных данных, в том числе их передачу в банк Банк ВТБ (ПАО)
-                                {additionalBank
-                                    ? ` и ${getBankIcon(additionalBank)} ${getBankName(additionalBank)}`
-                                    : ''}{' '}
-                                в целях оформления банковской карты.
+                                обработку персональных данных, в том числе их передачу в банк{' '}
+                                <img
+                                    src={getBankIcon('vtb')}
+                                    alt="VTB"
+                                    style={{ width: '20px', height: '20px', marginLeft: '4px' }}
+                                />{' '}
+                                Банк ВТБ (ПАО)
+                                {additionalBank ? ` и ` : ' '}
+                                <br />
+                                {additionalBank && (
+                                    <img
+                                        src={getBankIcon(additionalBank)}
+                                        alt={additionalBank}
+                                        style={{ width: '20px', height: '20px', marginLeft: '4px', marginRight: '4px' }}
+                                    />
+                                )}
+                                {additionalBank ? getBankName(additionalBank) : ''} в целях оформления банковской карты.
                             </div>
                         </ApplicationText>
 
@@ -396,7 +379,13 @@ const CardRequestForm: React.FC = () => {
                                         selected={additionalBank === bank.id}
                                         onClick={() => handleAdditionalBankChange(bank.id)}
                                     >
-                                        <div className="bank-icon">{getBankIcon(bank.id)}</div>
+                                        <div className="bank-icon">
+                                            <img
+                                                src={getBankIcon(bank.id)}
+                                                alt={bank.id}
+                                                style={{ width: '40px', height: '40px' }}
+                                            />
+                                        </div>
                                         <div className="bank-name">{bank.name}</div>
                                     </BankOption>
                                 ))}
@@ -412,6 +401,7 @@ const CardRequestForm: React.FC = () => {
                                 loading={isLoading}
                                 isActive={true}
                                 notActiveClickMessage=""
+                                width="100%"
                             />
                         </ButtonGroup>
                         <br />
