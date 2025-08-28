@@ -1,52 +1,46 @@
 import { CardRequestData, CardRequestResponse, CardRequestSubmitData } from './types'
 
-// Заглушка для тестирования API
 export class CardRequestMockApi {
     private static storage: CardRequestData | null = null
 
     static async getCardRequest(): Promise<CardRequestData | null> {
-        // Имитируем задержку сети
-        await new Promise(resolve => setTimeout(resolve, 500))
+        await new Promise((resolve) => setTimeout(resolve, 500))
 
         return this.storage
     }
 
     static async submitCardRequest(data: CardRequestSubmitData): Promise<CardRequestResponse> {
-        // Имитируем задержку сети
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        await new Promise((resolve) => setTimeout(resolve, 1000))
 
-        // Создаем новое заявление
-        this.storage = {
-            bank: data.bank,
-            status: 'processing',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
+        if (!data.accept) {
+            throw new Error('Необходимо принять условия')
         }
 
-        // Имитируем смену статуса на "ready" через 5 секунд
+        this.storage = {
+            additionalBank: data.additionalBank,
+            createdAt: new Date().toISOString(),
+        }
+
         setTimeout(() => {
-            if (this.storage && this.storage.bank === data.bank) {
-                this.storage.status = 'ready'
-                this.storage.updated_at = new Date().toISOString()
+            if (this.storage) {
+                this.storage.file = 'https://example.com/documents/card-request-document.pdf'
             }
         }, 5000)
 
         return {
             success: true,
             data: this.storage,
-            message: 'Заявление успешно подано'
+            message: 'Заявление успешно подано',
         }
     }
 
     static async downloadDocument(): Promise<void> {
-        // Имитируем задержку сети
-        await new Promise(resolve => setTimeout(resolve, 500))
+        await new Promise((resolve) => setTimeout(resolve, 500))
 
-        if (!this.storage || this.storage.status !== 'ready') {
-            throw new Error('Документ не готов для скачивания')
+        if (!this.storage?.file) {
+            throw new Error('Документ ещё не готов для скачивания')
         }
 
-        // Создаем фиктивный PDF blob
         const pdfContent = `%PDF-1.4
 1 0 obj
 <<
@@ -105,30 +99,26 @@ startxref
         const url = window.URL.createObjectURL(blob)
         const link = document.createElement('a')
         link.href = url
-        link.download = `card-request-${this.storage.bank}.pdf`
+        link.download = `used-bank-request.pdf`
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
         window.URL.revokeObjectURL(url)
     }
 
-    // Метод для сброса состояния (для тестирования)
     static reset(): void {
         this.storage = null
     }
 
-    // Метод для установки статуса (для тестирования)
-    static setStatus(status: 'processing' | 'ready' | null): void {
+    static setDocumentReady(fileUrl = 'https://example.com/documents/card-request-document.pdf'): void {
         if (this.storage) {
-            this.storage.status = status
-            this.storage.updated_at = new Date().toISOString()
+            this.storage.file = fileUrl
         }
     }
 }
 
-// Экспортируем функции в том же формате, что и основное API
 export const cardRequestMockApi = {
     getCardRequest: () => CardRequestMockApi.getCardRequest(),
     submitCardRequest: (data: CardRequestSubmitData) => CardRequestMockApi.submitCardRequest(data),
-    downloadDocument: () => CardRequestMockApi.downloadDocument()
+    downloadDocument: () => CardRequestMockApi.downloadDocument(),
 }

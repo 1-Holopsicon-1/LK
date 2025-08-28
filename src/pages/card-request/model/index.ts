@@ -1,7 +1,7 @@
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { useUnit } from 'effector-react'
 
-import { cardRequestApi } from '../api/card-request-api-mock'
+import { cardRequestApi } from '../api'
 import { CardRequestData, CardRequestSubmitData } from '../api/types'
 
 // Events
@@ -34,10 +34,23 @@ export const $cardRequest = createStore<CardRequestData | null>(null)
 
 export const $isLoading = createStore(false)
     .on([getCardRequestFx, submitCardRequestFx, downloadDocumentFx], () => true)
-    .on([getCardRequestFx.done, getCardRequestFx.fail, submitCardRequestFx.done, submitCardRequestFx.fail, downloadDocumentFx.done, downloadDocumentFx.fail], () => false)
+    .on(
+        [
+            getCardRequestFx.done,
+            getCardRequestFx.fail,
+            submitCardRequestFx.done,
+            submitCardRequestFx.fail,
+            downloadDocumentFx.done,
+            downloadDocumentFx.fail,
+        ],
+        () => false,
+    )
 
 export const $error = createStore<string | null>(null)
-    .on([getCardRequestFx.fail, submitCardRequestFx.fail, downloadDocumentFx.fail], (_, error) => error.error.message || 'Произошла ошибка')
+    .on(
+        [getCardRequestFx.fail, submitCardRequestFx.fail, downloadDocumentFx.fail],
+        (_, error) => error.error.message || 'Произошла ошибка',
+    )
     .on([getCardRequestFx, submitCardRequestFx, downloadDocumentFx], () => null)
 
 // Samples
