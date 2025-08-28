@@ -12,8 +12,6 @@ import { Title } from '@shared/ui/title'
 import { BANK_OPTIONS, type BankOption, cardRequestUtils } from '../api/types'
 import { cardRequestModel } from '../model'
 
-// Иконки банков (emoji для простоты, можно заменить на SVG)
-// Используем утилиты из types
 const getBankIcon = cardRequestUtils.getBankIcon
 const getBankName = cardRequestUtils.getBankName
 
@@ -243,7 +241,6 @@ const CardRequestForm: React.FC = () => {
             additionalBank: additionalBank,
         })
 
-        // Обновляем данные через секунду после отправки
         setTimeout(() => {
             getRequest()
         }, 1000)
@@ -282,11 +279,9 @@ const CardRequestForm: React.FC = () => {
     }
 
     const getSelectedBankName = () => {
-        // Основной банк всегда ВТБ
         return 'Банк ВТБ (ПАО)'
     }
 
-    // Функция для проверки наличия дополнительного банка
     const hasAdditionalBank = () => {
         return Boolean(
             cardRequest?.additionalBank &&
