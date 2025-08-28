@@ -1,1 +1,0 @@
-import{s as t}from"./vendor-6764d205.js";import{Y as e}from"./index-a16b43ab.js";const i=t.div.withConfig({componentId:"sc-ldtz4l-0"})(["display:",";padding:8px;border-radius:6px;background:",";color:#fff;font-weight:600;align-items:center;justify-content:center;font-size:0.7rem;"],({visible:o})=>o?"flex":"none",e.red.light1);export{i as B};
