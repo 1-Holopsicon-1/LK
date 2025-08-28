@@ -1,21 +1,21 @@
 export interface CardRequestData {
-    bank: string
-    additionalBank?: string
-    status: 'processing' | 'ready' | null
-    created_at?: string
-    updated_at?: string
+    file?: string
+    additionalBank?: string // sber|alfa
+    createdAt?: string
 }
 
 export interface CardRequestSubmitData {
-    bank: string
-    additionalBank?: string
+    accept: boolean
+    additionalBank?: string // sber|alfa
 }
 
 export interface CardRequestResponse {
-    success: boolean
-    data: CardRequestData
+    success?: boolean
+    data?: CardRequestData | CardRequestData[]
     message?: string
 }
+
+export type CardRequestApiResponse = CardRequestData[] | CardRequestResponse
 
 export type BankOption = {
     id: string
@@ -23,7 +23,46 @@ export type BankOption = {
 }
 
 export const BANK_OPTIONS: BankOption[] = [
-    { id: 'sberbank', name: 'ПАО Сбербанк' },
-    { id: 'vtb', name: 'Банк ВТБ (ПАО)' },
-    { id: 'alfabank', name: 'АО Альфа-Банк' },
+    { id: 'sber', name: 'ПАО Сбербанк' },
+    { id: 'alfa', name: 'АО Альфа-Банк' },
 ]
+
+export const cardRequestUtils = {
+    isReady: (request: CardRequestData | null): boolean => {
+        if (!request) return false
+        const file = request.file
+        if (!file || typeof file !== 'string') return false
+
+        const trimmedFile = file.trim()
+        if (trimmedFile === '') return false
+
+        return (
+            trimmedFile.startsWith('http') ||
+            trimmedFile.startsWith('/') ||
+            trimmedFile.includes('.php') ||
+            trimmedFile.includes('.')
+        )
+    },
+
+    isProcessing: (request: CardRequestData | null): boolean => {
+        return Boolean(request && !cardRequestUtils.isReady(request))
+    },
+
+    hasRequest: (request: CardRequestData | null): boolean => {
+        return Boolean(request)
+    },
+
+    getBankName: (bankId: string): string => {
+        const bank = BANK_OPTIONS.find((b) => b.id === bankId)
+        return bank?.name || bankId
+    },
+
+    getBankIcon: (bankId: string): string => {
+        const icons: Record<string, string> = {
+            sber: '🟢',
+            alfa: '🔴',
+            vtb: '🔵',
+        }
+        return icons[bankId] || '🏦'
+    },
+}
