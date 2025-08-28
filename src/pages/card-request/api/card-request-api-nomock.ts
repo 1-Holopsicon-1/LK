@@ -4,12 +4,13 @@ import getToken from '@shared/lib/token'
 
 import { CardRequestData, CardRequestResponse, CardRequestSubmitData } from './types'
 
-const API_BASE_URL = '/old/lk_api.php'
+const API_BASE_URL_PROD = '/old/lk_api.php'
+const API_BASE_URL = '/api'
 
 export const cardRequestApi = {
     getCardRequest: async (): Promise<CardRequestData | null> => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/?getUsedBank&token=${getToken()}`)
+            const response = await axios.get(`${API_BASE_URL_PROD}/?getUsedBank&token=${getToken()}`)
             let data = null
 
             if (response.data && typeof response.data === 'object') {
