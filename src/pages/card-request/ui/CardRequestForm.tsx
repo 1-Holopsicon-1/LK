@@ -195,11 +195,11 @@ const CardRequestForm: React.FC = () => {
         'mfnbrx@gmail.com',
         't.t.testov@mospolytech.ru',
     ]
-
+    /*
     if (user?.email && !allowedEmails.includes(user.email)) {
         return <Error text={'Данный раздел находится в разработке или не доступен для вас'} />
     }
-
+     */
     useEffect(() => {
         getRequest()
     }, [])
@@ -261,7 +261,6 @@ const CardRequestForm: React.FC = () => {
                             </p>
                             {hasAdditionalBank() && (
                                 <p style={{ marginBottom: '0' }}>
-                                    Дополнительный банк:{' '}
                                     <img
                                         src={getBankIcon(cardRequest.additionalBank)}
                                         alt={cardRequest.additionalBank}
@@ -373,7 +372,13 @@ const CardRequestForm: React.FC = () => {
                             <Title size={5} bottomGap="12px">
                                 Выберите дополнительный банк (необязательно):
                             </Title>
-
+                            {!additionalBank ? (
+                                ' '
+                            ) : (
+                                <p style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+                                    Для отмены выбраного банка, нажмите на кнопку повторно.
+                                </p>
+                            )}
                             <BankOptions>
                                 {BANK_OPTIONS.filter((bank) => bank.id !== 'vtb').map((bank) => (
                                     <BankOption
