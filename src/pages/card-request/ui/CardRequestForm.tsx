@@ -261,6 +261,7 @@ const CardRequestForm: React.FC = () => {
                             </p>
                             {hasAdditionalBank() && (
                                 <p style={{ marginBottom: '0' }}>
+                                    Дополнительный банк:{' '}
                                     <img
                                         src={getBankIcon(cardRequest.additionalBank)}
                                         alt={cardRequest.additionalBank}
@@ -375,7 +376,7 @@ const CardRequestForm: React.FC = () => {
                             {!additionalBank ? (
                                 ' '
                             ) : (
-                                <p style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+                                <p style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
                                     Для отмены выбраного банка, нажмите на кнопку повторно.
                                 </p>
                             )}

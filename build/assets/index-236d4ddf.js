@@ -1,1 +1,0 @@
-import{j as s}from"./vendor-6764d205.js";import{L as a}from"./links-list-6b166cb0.js";import{k as t,P as e,az as r}from"./index-4d079634.js";const n=()=>s.jsx(t,{padding:"10px",children:s.jsx(e,{children:s.jsx(a,{blocks:r,title:"материалам",isStaff:!1})})});export{n as default};
