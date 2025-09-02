@@ -4,6 +4,7 @@ import getToken from '@shared/lib/token'
 
 import { CardRequestData, CardRequestResponse, CardRequestSubmitData } from './types'
 
+
 const API_BASE_URL_PROD = '/old/lk_api.php'
 const API_BASE_URL = '/api'
 
