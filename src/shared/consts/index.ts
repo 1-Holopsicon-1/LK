@@ -2,6 +2,8 @@ import { IconType } from 'react-icons'
 import { FiAlertCircle, FiCheck, FiInfo, FiXCircle } from 'react-icons/fi'
 import { HiOutlineLightBulb } from 'react-icons/hi'
 
+export * as scienceConfig from './science'
+
 export type MessageType = 'success' | 'failure' | 'info' | 'alert' | 'tip' | 'hint' | 'hrFailure'
 export interface IGrade {
     Зачтено: number

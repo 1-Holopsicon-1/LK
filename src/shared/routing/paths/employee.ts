@@ -92,3 +92,7 @@ export const CERTIFICATION_AND_ISSUANCE_OF_DOCS = APPLICATIONS_ROUTE + '/certifi
 
 export const DEFERMENT_FROM_CONSCRIPTION = APPLICATIONS_ROUTE + '/deferment-from-conscription'
 export const CERTIFIED_COPIES_OF_MILITARY_DOCS = APPLICATIONS_ROUTE + '/certified-copies-of-military-docs'
+
+export const ARTICLE_APPLY = '/articles/:id/apply'
+export const ARTICLE_APPLICATIONS = '/article-applications'
+export const ARTICLE_APPLICATIONS_ADMIN = '/article-applications/approver'

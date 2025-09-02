@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { FiPlus } from 'react-icons/fi'
 import { useHistory } from 'react-router'
 
 import { useUnit } from 'effector-react'
@@ -8,7 +7,7 @@ import { ScienceTable } from '@widgets/science-table'
 
 import { scienceModel } from '@entities/science'
 
-import { ARTICLES } from '@shared/routing'
+import { ARTICLES, ARTICLE_APPLICATIONS } from '@shared/routing'
 import { Button } from '@shared/ui/atoms'
 import Flex from '@shared/ui/flex'
 import PageBlock from '@shared/ui/page-block'
@@ -34,12 +33,11 @@ const PublicationList = () => {
 }
 
 const Header = () => {
-    const [select, selected, articles, columns, setColumns] = useUnit([
+    const history = useHistory()
+    const [select, selected, articles] = useUnit([
         scienceModel.events.selectArticle,
         scienceModel.stores.selectedArticles,
         scienceModel.stores.articles,
-        scienceModel.stores.columns,
-        scienceModel.events.setColumns,
     ])
     const [allSelected, setAllSelected] = useState(false)
     return (
@@ -81,6 +79,16 @@ const Header = () => {
             </Flex>
             <Button
                 onClick={() => {
+                    history.push(ARTICLE_APPLICATIONS)
+                }}
+                text="Мои заявки"
+                background="var(--reallyBlue)"
+                textColor="#fff"
+                minWidth="100px"
+                height="36px"
+            />
+            {/* <Button
+                onClick={() => {
                     setColumns([
                         ...columns,
                         {
@@ -96,7 +104,7 @@ const Header = () => {
                 minWidth="150px"
                 height="36px"
                 icon={<FiPlus />}
-            />
+            /> */}
         </Flex>
     )
 }

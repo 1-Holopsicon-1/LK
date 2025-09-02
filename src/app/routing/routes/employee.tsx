@@ -24,6 +24,9 @@ import {
     AllowanceInfo,
     Allowances,
     Article,
+    ArticleApplications,
+    ArticleApplicationsAdmin,
+    ArticleApply,
     ArticleList,
     CertificateFromPlaceOfWorkPage,
     CertificateOfWorkExperiencePage,
@@ -62,7 +65,7 @@ import {
     PersonaIncomeTaxReferencePage,
     PersonalNotificationsPage,
     PhysicalEducationStudent,
-    PrinterMaintenancePage,
+    // PrinterMaintenancePage,
     QuestionPersonalAccountPage,
     QuestionSedPage,
     Relocation,
@@ -142,6 +145,7 @@ export const employeePages = {
     'all-staff': AllStaff,
     'publication-activity': Science,
     'article-list': ArticleList,
+    'article-applications-admin': ArticleApplicationsAdmin,
     'open-publication': () => {
         React.useEffect(() => {
             window.location.replace('https://e.mospolytech.ru/old/index.php?p=exp_concl')
@@ -255,4 +259,6 @@ export const employeeHiddenPages = {
         return <Redirect to={ONBOARDING} />
     },
     article: Article,
+    'article-apply': ArticleApply,
+    'article-applications': ArticleApplications,
 }

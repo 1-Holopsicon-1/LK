@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { FiEyeOff, FiPlus } from 'react-icons/fi'
-import { useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 
 import { useUnit } from 'effector-react'
 
 import { articleModel } from '@entities/science'
 import { getDefaultColumns } from '@entities/science/lib/get-default-columns'
 
+import { ARTICLE_APPLY } from '@shared/routing'
 import { Button, Error } from '@shared/ui/atoms'
 import Flex from '@shared/ui/flex'
 import { useModal } from '@shared/ui/modal'
@@ -21,6 +22,7 @@ import { DetailsModal } from '../ui/details-modal'
 const Article = () => {
     const { open } = useModal()
     const { id } = useParams<{ id: string }>()
+    const history = useHistory()
     const [article, loading, pageMounted, getDetailsClicked] = useUnit([
         articleModel.stores.article,
         articleModel.stores.loading,
@@ -46,9 +48,20 @@ const Article = () => {
 
     return (
         <PageBlock outerPadding="10px">
-            <Title align="left" size={2}>
-                {article?.articleTitle}
-            </Title>
+            <Flex ai="flex-start">
+                <Title align="left" size={2}>
+                    {article?.articleTitle}
+                </Title>
+                <Button
+                    onClick={() => history.push(ARTICLE_APPLY.replace(':id', id))}
+                    text="Заявить об&nbsp;авторстве"
+                    background="var(--reallyBlue)"
+                    textColor="#fff"
+                    padding="1.5rem 1rem"
+                    minWidth="150px"
+                    icon={<FiPlus />}
+                />
+            </Flex>
             <Flex jc="space-between" ai="flex-start">
                 <Subtext align="left">ID публикации: {article?.id}</Subtext>
                 <Button

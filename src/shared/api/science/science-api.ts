@@ -1,6 +1,38 @@
-import { Article, Changes, Filter, Sort } from '@shared/api/science/types'
+import { createQuery } from '@farfetched/core'
+import { createEffect } from 'effector'
 
-import { $scienceApi } from '../config/science-config'
+import {
+    Article,
+    ArticleApplication,
+    ArticleApplicationDetailed,
+    ArticleApplicationStatus,
+    Changes,
+    Filter,
+    Sort,
+} from '@shared/api/science/types'
+
+import { $rolesApi, $scienceApi } from '../config/science-config'
+
+type ServiceRoles = {
+    Roles: {
+        Name: string
+    }[]
+}
+
+export const getRolesQuery = createQuery({
+    handler: async () => {
+        const { data } = await $rolesApi.get<{
+            Data: {
+                Id: string
+                Apps: {
+                    Lk: ServiceRoles
+                    Science: ServiceRoles
+                }
+            }
+        }>(`/me`)
+        return data
+    },
+})
 
 export type UploadReq = { scopusFile: File; wosFile: File }
 
@@ -60,3 +92,58 @@ function convertKeysToLowerCase(obj: Record<string, any>): Record<string, any> {
         {} as Record<string, any>,
     )
 }
+
+export type ApplyArticleFxParams = {
+    articleId: string
+    departmentId: string | null
+}
+export const applyArticleFx = createEffect(async (params: ApplyArticleFxParams) => {
+    const { data } = await $scienceApi.post('/article/application', params)
+    return data
+})
+
+export type GetUserArticleApplicationsFxParams = { limit: number; offset: number; statuses: ArticleApplicationStatus[] }
+export const getUserArticleApplicationsFx = createEffect(async (params: GetUserArticleApplicationsFxParams) => {
+    const { data } = await $scienceApi.post<{
+        totalCount: number
+        data: ArticleApplication[]
+    }>('/article/application/all', params)
+    return data.data
+})
+
+export type GetAllArticleApplicationsFxParams = { limit: number; offset: number; statuses: ArticleApplicationStatus[] }
+export const getAllArticleApplicationsFx = createEffect(async (params: GetAllArticleApplicationsFxParams) => {
+    const { data } = await $scienceApi.post<{
+        data: ArticleApplication[]
+        totalCount: number
+    }>('/article/application/approver/all', params)
+    return data
+})
+
+export type GetArticleApplicationByIdFxParams = { applicationId: string }
+export const getArticleApplicationByIdFx = createEffect(async (params: GetArticleApplicationByIdFxParams) => {
+    const { data } = await $scienceApi.get<{
+        data: ArticleApplicationDetailed
+    }>('/article/application/' + params.applicationId)
+    return data.data
+})
+
+export type GetArticleApplicationByIdAdminFxParams = { applicationId: string }
+export const getArticleApplicationByIdAdminFx = createEffect(async (params: GetArticleApplicationByIdFxParams) => {
+    const { data } = await $scienceApi.get<{
+        data: ArticleApplicationDetailed
+    }>('/article/application/approver/' + params.applicationId)
+    return data.data
+})
+
+export type ApproveApplicationFxParams = { id: string; fractionShare: number | null }
+export const approveApplicationFx = createEffect(async ({ id, fractionShare }: ApproveApplicationFxParams) => {
+    const { data } = await $scienceApi.post(`/article/application/${id}/approve`, { fractionShare })
+    return data
+})
+
+export type DeclineApplicationFxParams = { id: string; declineReason: string }
+export const declineApplicationFx = createEffect(async ({ id, declineReason }: DeclineApplicationFxParams) => {
+    const { data } = await $scienceApi.post(`/article/application/${id}/decline`, { declineReason })
+    return data
+})
