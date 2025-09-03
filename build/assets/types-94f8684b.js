@@ -1,0 +1,1 @@
+const e={Accepted:"Принято",Declined:"Отклонено",HeadOfDepartmentReview:"На рассмотрении заведующим кафедрой",DeanOrDeputyDeanReview:"На рассмотрении деканом или заместителем декана",AdminReview:"На рассмотрении администратором"};export{e as A};
