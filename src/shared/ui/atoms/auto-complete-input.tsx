@@ -226,7 +226,7 @@ const AutocompleteInput = ({
 
     // Фильтруем предложения на основе ввода пользователя
     useEffect(() => {
-        if (value) {
+        if (value && Array.isArray(suggestions)) {
             const filtered = suggestions.filter((suggestion) => suggestion.toLowerCase().includes(value.toLowerCase()))
             setFilteredSuggestions(filtered)
         } else {

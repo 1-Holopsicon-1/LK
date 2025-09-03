@@ -66,6 +66,8 @@ import {
     PersonalNotificationsPage,
     PhysicalEducationStudent,
     // PrinterMaintenancePage,
+    PublicationsStatistics,
+    FractionShareStatistics,
     QuestionPersonalAccountPage,
     QuestionSedPage,
     Relocation,
@@ -144,6 +146,8 @@ export const employeePages = {
     'data-verification': DataVerificationPage,
     'all-staff': AllStaff,
     'publication-activity': Science,
+    'publications-statistics': PublicationsStatistics,
+    'fraction-share-statistics': FractionShareStatistics,
     'article-list': ArticleList,
     'article-applications-admin': ArticleApplicationsAdmin,
     'open-publication': () => {
