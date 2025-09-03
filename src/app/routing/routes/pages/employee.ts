@@ -111,4 +111,6 @@ export const ArticleApplications = lazy(() => import('@pages/science/pages/artic
 export const ArticleApplicationsAdmin = lazy(
     () => import('@pages/science/pages/article-applications-admin/article-applications-admin'),
 )
+export const PublicationsStatistics = lazy(() => import('@pages/science/pages/publications-statistics'))
+export const FractionShareStatistics = lazy(() => import('@pages/science/pages/fraction-share-statistics'))
 export const Children = lazy(() => import('@pages/children'))

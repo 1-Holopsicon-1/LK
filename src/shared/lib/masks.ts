@@ -16,7 +16,8 @@ const phoneMask = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!phoneInput.length) return ''
 
     if (e.target.value.length !== selectionStart) {
-        if (/\D/g.test((e.nativeEvent as InputEvent).data ?? '')) {
+        const inputData = (e.nativeEvent as InputEvent).data
+        if (inputData && typeof inputData === 'string' && /\D/g.test(inputData)) {
             return phoneInput
         }
         return e.target.value
