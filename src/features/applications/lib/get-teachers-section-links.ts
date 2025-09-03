@@ -154,7 +154,7 @@ const getInDevelopmentStaffLinks = () => [
         links: [{ link: COURIER, title: 'Курьер' }],
     },
     {
-        title: 'Мобилизационный отдел',
+        title: 'Управление мобилизационной подготовки',
         disabled: isProduction,
         links: [
             {

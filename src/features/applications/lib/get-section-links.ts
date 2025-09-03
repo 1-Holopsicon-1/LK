@@ -162,7 +162,7 @@ const getSectionLinks = ({ studentFinance }: { studentFinance: StudentAccount['f
             ],
         },
         {
-            title: 'Мобилизационный отдел',
+            title: 'Управление мобилизационной подготовки',
             links: [
                 { link: MILITARY_REGISTRATION_DOCUMENTS, title: 'Отправить документы воинского учета' },
                 {
