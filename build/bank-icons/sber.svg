@@ -1,0 +1,64 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1545 1544" width="1545" height="1544">
+	<title>SBER</title>
+	<defs>
+		<linearGradient id="g1" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-71.088,-562.936,281.912,-35.6,208.199,1296.384)">
+			<stop offset=".144" stop-color="#f2e913"/>
+			<stop offset=".304" stop-color="#e7e518"/>
+			<stop offset=".582" stop-color="#cadb26"/>
+			<stop offset=".891" stop-color="#a3cd39"/>
+		</linearGradient>
+		<linearGradient id="g2" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(501.768,-69.795,34.288,246.5,277.211,207.967)">
+			<stop offset=".059" stop-color="#0fa8e0"/>
+			<stop offset=".539" stop-color="#0099f9"/>
+			<stop offset=".923" stop-color="#0291eb"/>
+		</linearGradient>
+		<linearGradient id="g3" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(567.411,-46.812,24.948,302.4,721.73,1392.776)">
+			<stop offset=".123" stop-color="#a3cd39"/>
+			<stop offset=".285" stop-color="#86c339"/>
+			<stop offset=".869" stop-color="#21a038"/>
+		</linearGradient>
+		<linearGradient id="g4" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(485.129,50.886,-25.465,242.777,734.741,114.614)">
+			<stop offset=".057" stop-color="#0291eb"/>
+			<stop offset=".79" stop-color="#0c8acb"/>
+		</linearGradient>
+		<linearGradient id="g5" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(528.068,84.455,-43.322,270.881,244.438,1319.141)">
+			<stop offset=".132" stop-color="#f2e913"/>
+			<stop offset=".298" stop-color="#ebe716"/>
+			<stop offset=".531" stop-color="#d9e01f"/>
+			<stop offset=".802" stop-color="#bbd62d"/>
+			<stop offset=".983" stop-color="#a3cd39"/>
+		</linearGradient>
+		<linearGradient id="g6" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(90.701,-551.212,280.886,46.22,135.902,794.752)">
+			<stop offset=".07" stop-color="#a3cd39"/>
+			<stop offset=".26" stop-color="#81c55f"/>
+			<stop offset=".922" stop-color="#0fa8e0"/>
+		</linearGradient>
+	</defs>
+	<style>
+		.s0 { fill: #21a038 } 
+		.s1 { fill: url(#g1) } 
+		.s2 { fill: url(#g2) } 
+		.s3 { fill: url(#g3) } 
+		.s4 { fill: url(#g4) } 
+		.s5 { fill: url(#g5) } 
+		.s6 { fill: url(#g6) } 
+	</style>
+	<g id="Page-1">
+		<g id="SB_ENG_RGB">
+			<g id="Group">
+				<path id="Path" class="s0" d="m1383.2 301.5c36.2 47.2 66.6 99 92.4 153.9l-702.2 518-295.6-185.6v-221.8l293.6 184.3z"/>
+				<g id="Path">
+					<path class="s1" d="m178.4 772.9c0-11 0-20 2-30.4l-178.5-9c0 12.3-1.3 25.9-1.3 38.1 0 212.8 86.6 405.5 226.3 545.2l126.8-126.1c-108-106.1-175.3-253.5-175.3-417.8z"/>
+					<path class="s2" d="m771.4 179.9c11 0 20.1 0 30.4 2l9.1-177.8c-11.7 0-25.9-2-37.5-2-213.4 0-406.2 86.7-546.5 226.3l126.8 126.8c106-108 255.4-175.3 417.7-175.3z"/>
+					<path class="s3" d="m771.4 1365.9c-10.3 0-19.4 0-30.4-1.9l-9 177.8c12.3 0 25.8 2 38.1 2 212.8 0 406.1-86.7 545.8-227l-126.1-126.1c-106.7 109.9-254.1 175.2-418.4 175.2z"/>
+				</g>
+				<g id="Path">
+					<path class="s4" d="m1106.4 283.4l150-111.2c-131.9-106.1-300.7-171.4-485-171.4v177.9c124.8 1.2 240.6 39.4 335 104.7z"/>
+					<path class="s0" d="m1544.2 772.9c0-47.2-4.5-92.4-12.3-138.3l-165.6 122.8c0 4.5 0 11 0 15.5 0 174.6-76.3 331.1-196.5 439.1l120.2 132.6c155.2-139.7 254.2-345.3 254.2-571.7z"/>
+					<path class="s5" d="m771.4 1365.9c-174.6 0-331.1-76.3-439.1-196.6l-132.5 120.3c141.6 156.5 345.3 254.2 571.6 254.2z"/>
+					<path class="s6" d="m375 333.9l-120.3-132.6c-156.5 141.6-254.1 345.3-254.1 571.6h177.8c0-173.3 76.3-331.7 196.6-439z"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>
