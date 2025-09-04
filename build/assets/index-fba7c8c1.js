@@ -1,1 +1,0 @@
-import{j as t}from"./vendor-04d91f24.js";import{T as o}from"./index-4738d0f8.js";import"./consts-efab0afd.js";import"./index-60431b6d.js";import"./index-351d66a0.js";const e=()=>t.jsx(o,{isTeachers:!1});export{e as default};
