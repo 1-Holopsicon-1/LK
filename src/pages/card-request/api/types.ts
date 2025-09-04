@@ -1,12 +1,12 @@
 export interface CardRequestData {
     file?: string
-    additionalBank?: string // sber|alfa
+    selectedBank?: string // vtb|sber|alfa
     createdAt?: string
 }
 
 export interface CardRequestSubmitData {
     accept: boolean
-    additionalBank?: string // sber|alfa
+    selectedBank?: string // vtb|sber|alfa
 }
 
 export interface CardRequestResponse {
@@ -23,6 +23,7 @@ export type BankOption = {
 }
 
 export const BANK_OPTIONS: BankOption[] = [
+    { id: 'vtb', name: 'Банк ВТБ (ПАО)' },
     { id: 'sber', name: 'ПАО Сбербанк' },
     { id: 'alfa', name: 'АО Альфа-Банк' },
 ]
@@ -59,9 +60,9 @@ export const cardRequestUtils = {
 
     getBankIcon: (bankId: string): string => {
         const icons: Record<string, string> = {
-            sber: 'src/pages/card-request/assets/bank-icons/sber.svg',
-            alfa: 'src/pages/card-request/assets/bank-icons/alpha2.svg',
-            vtb: 'src/pages/card-request/assets/bank-icons/vtb.svg',
+            vtb: '/bank-icons/vtb.svg',
+            sber: '/bank-icons/sber.svg',
+            alfa: '/bank-icons/alfa.svg',
         }
         return icons[bankId] || '🏦'
     },
