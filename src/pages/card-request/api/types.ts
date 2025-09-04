@@ -1,12 +1,12 @@
 export interface CardRequestData {
     file?: string
-    additionalBank?: string // sber|alfa
+    selectedBank?: string // vtb|sber|alfa
     createdAt?: string
 }
 
 export interface CardRequestSubmitData {
     accept: boolean
-    additionalBank?: string // sber|alfa
+    selectedBank?: string // vtb|sber|alfa
 }
 
 export interface CardRequestResponse {
@@ -23,6 +23,7 @@ export type BankOption = {
 }
 
 export const BANK_OPTIONS: BankOption[] = [
+    { id: 'vtb', name: 'Банк ВТБ (ПАО)' },
     { id: 'sber', name: 'ПАО Сбербанк' },
     { id: 'alfa', name: 'АО Альфа-Банк' },
 ]

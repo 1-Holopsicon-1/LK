@@ -4,7 +4,6 @@ import getToken from '@shared/lib/token'
 
 import { CardRequestData, CardRequestResponse, CardRequestSubmitData } from './types'
 
-
 const API_BASE_URL_PROD = '/old/lk_api.php'
 const API_BASE_URL = '/api'
 
@@ -17,14 +16,30 @@ export const cardRequestApi = {
             if (response.data && typeof response.data === 'object') {
                 if (Array.isArray(response.data) && response.data.length > 0) {
                     data = response.data[0]
+                    // Обратная совместимость: если приходит additionalBank, преобразуем в selectedBank
+                    if (data.additionalBank && !data.selectedBank) {
+                        data.selectedBank = data.additionalBank
+                        delete data.additionalBank
+                    }
                 } else if (response.data.success && response.data.data) {
                     data = response.data.data
+                    // Обратная совместимость: если приходит additionalBank, преобразуем в selectedBank
+                    if (data.additionalBank && !data.selectedBank) {
+                        data.selectedBank = data.additionalBank
+                        delete data.additionalBank
+                    }
                 } else if (
                     response.data.file !== undefined ||
+                    response.data.selectedBank !== undefined ||
                     response.data.additionalBank !== undefined ||
                     response.data.createdAt !== undefined
                 ) {
                     data = response.data
+                    // Обратная совместимость: если приходит additionalBank, преобразуем в selectedBank
+                    if (data.additionalBank && !data.selectedBank) {
+                        data.selectedBank = data.additionalBank
+                        delete data.additionalBank
+                    }
                 } else if (response.data === null || Object.keys(response.data).length === 0) {
                     data = null
                 } else if (Array.isArray(response.data) && response.data.length === 0) {
@@ -43,8 +58,8 @@ export const cardRequestApi = {
         try {
             const formData = new FormData()
             formData.set('accept', data.accept.toString())
-            if (data.additionalBank) {
-                formData.set('additionalBank', data.additionalBank)
+            if (data.selectedBank) {
+                formData.set('additionalBank', data.selectedBank)
             }
             formData.set('token', getToken())
 

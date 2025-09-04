@@ -17,7 +17,7 @@ export class CardRequestMockApi {
         }
 
         this.storage = {
-            additionalBank: data.additionalBank,
+            selectedBank: data.selectedBank,
             createdAt: new Date().toISOString(),
         }
 

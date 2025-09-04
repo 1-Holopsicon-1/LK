@@ -84,7 +84,7 @@ const BankOptions = styled.div`
     }
 `
 
-const AdditionalBankSection = styled.div`
+const BankSection = styled.div`
     margin: 24px 0;
     padding: 20px;
     background: var(--block-content);
@@ -177,7 +177,7 @@ const CardRequestForm: React.FC = () => {
         data: { user },
     } = userModel.selectors.useUser()
 
-    const [additionalBank, setAdditionalBank] = useState<string>('')
+    const [selectedBank, setSelectedBank] = useState<string>(cardRequest?.selectedBank || '')
 
     // Проверяем, доступна ли форма (до 1 октября)
     const isFormAvailable = () => {
@@ -204,14 +204,20 @@ const CardRequestForm: React.FC = () => {
         getRequest()
     }, [])
 
-    const handleAdditionalBankChange = (bankId: string) => {
-        setAdditionalBank(bankId === additionalBank ? '' : bankId)
+    useEffect(() => {
+        if (cardRequest?.selectedBank) {
+            setSelectedBank(cardRequest.selectedBank)
+        }
+    }, [cardRequest?.selectedBank])
+
+    const handleBankChange = (bankId: string) => {
+        setSelectedBank(bankId)
     }
 
     const handleSubmit = () => {
         submitRequest({
             accept: true,
-            additionalBank: additionalBank,
+            selectedBank: selectedBank,
         })
 
         setTimeout(() => {
@@ -220,16 +226,16 @@ const CardRequestForm: React.FC = () => {
     }
 
     const getSelectedBankName = () => {
-        return 'Банк ВТБ (ПАО)'
+        return selectedBank ? getBankName(selectedBank) : '[банк не выбран]'
     }
 
-    const hasAdditionalBank = () => {
+    const hasSelectedBank = () => {
         return Boolean(
-            cardRequest?.additionalBank &&
-                cardRequest.additionalBank !== '' &&
-                cardRequest?.additionalBank !== 'null' &&
-                cardRequest?.additionalBank !== null &&
-                cardRequest.additionalBank.trim() !== '',
+            cardRequest?.selectedBank &&
+                cardRequest.selectedBank !== '' &&
+                cardRequest?.selectedBank !== 'null' &&
+                cardRequest?.selectedBank !== null &&
+                cardRequest.selectedBank.trim() !== '',
         )
     }
 
@@ -251,25 +257,20 @@ const CardRequestForm: React.FC = () => {
 
                         <div style={{ marginBottom: '24px', color: 'var(--text-secondary)' }}>
                             <p style={{ marginBottom: '8px' }}>
-                                Основной банк:{' '}
-                                <img
-                                    src={getBankIcon('vtb')}
-                                    alt="VTB"
-                                    style={{ width: '24px', height: '24px', marginLeft: '8px' }}
-                                />{' '}
-                                <strong>{getSelectedBankName()}</strong>
+                                Выбранный банк:{' '}
+                                {cardRequest.selectedBank ? (
+                                    <>
+                                        <img
+                                            src={getBankIcon(cardRequest.selectedBank)}
+                                            alt={cardRequest.selectedBank}
+                                            style={{ width: '24px', height: '24px', marginLeft: '8px' }}
+                                        />{' '}
+                                        <strong>{getBankName(cardRequest.selectedBank)}</strong>
+                                    </>
+                                ) : (
+                                    <strong>[банк не выбран]</strong>
+                                )}
                             </p>
-                            {hasAdditionalBank() && (
-                                <p style={{ marginBottom: '0' }}>
-                                    Дополнительный банк:{' '}
-                                    <img
-                                        src={getBankIcon(cardRequest.additionalBank)}
-                                        alt={cardRequest.additionalBank}
-                                        style={{ width: '24px', height: '24px', marginLeft: '8px' }}
-                                    />{' '}
-                                    <strong>{getBankName(cardRequest.additionalBank)}</strong>
-                                </p>
-                            )}
                         </div>
 
                         <Flex gap="8px">
@@ -325,67 +326,49 @@ const CardRequestForm: React.FC = () => {
                                 Для перечисления причитающихся мне денежных средств (стипендий, материальной поддержки и
                                 других выплат) прошу Вас отправить заявку на оформление банковской карты НСПК «МИР» в
                                 рамках зарплатного проекта с банком{' '}
-                                <img
-                                    src={getBankIcon('vtb')}
-                                    alt="VTB"
-                                    style={{ width: '20px', height: '20px', marginLeft: '4px' }}
-                                />{' '}
-                                Банк ВТБ (ПАО)
+                                {selectedBank ? (
+                                    <>
+                                        <img
+                                            src={getBankIcon(selectedBank)}
+                                            alt={selectedBank}
+                                            style={{ width: '20px', height: '20px', marginLeft: '4px' }}
+                                        />{' '}
+                                        {getBankName(selectedBank)}
+                                    </>
+                                ) : (
+                                    '[выберите банк]'
+                                )}
                             </div>
-
-                            {additionalBank && (
-                                <div className="additional-request">
-                                    Также прошу отправить заявку на оформление дополнительной банковской карты НСПК
-                                    «МИР» банка{'\n'}
-                                    <br />
-                                    <img
-                                        src={getBankIcon(additionalBank)}
-                                        alt={additionalBank}
-                                        style={{ width: '20px', height: '20px', marginLeft: '4px' }}
-                                    />{' '}
-                                    {getBankName(additionalBank)}
-                                </div>
-                            )}
 
                             <div className="consent-text">
                                 Подтверждаю предоставленное мною при приеме на обучение в Московский Политех согласие на
                                 обработку персональных данных, в том числе их передачу в банк{' '}
-                                <img
-                                    src={getBankIcon('vtb')}
-                                    alt="VTB"
-                                    style={{ width: '20px', height: '20px', marginLeft: '4px' }}
-                                />{' '}
-                                Банк ВТБ (ПАО)
-                                {additionalBank ? ` и ` : ' '}
-                                <br />
-                                {additionalBank && (
-                                    <img
-                                        src={getBankIcon(additionalBank)}
-                                        alt={additionalBank}
-                                        style={{ width: '20px', height: '20px', marginLeft: '4px', marginRight: '4px' }}
-                                    />
-                                )}
-                                {additionalBank ? getBankName(additionalBank) : ''} в целях оформления банковской карты.
+                                {selectedBank ? (
+                                    <>
+                                        <img
+                                            src={getBankIcon(selectedBank)}
+                                            alt={selectedBank}
+                                            style={{ width: '20px', height: '20px', marginLeft: '4px' }}
+                                        />{' '}
+                                        {getBankName(selectedBank)}
+                                    </>
+                                ) : (
+                                    '[выберите банк]'
+                                )}{' '}
+                                в целях оформления банковской карты.                            
                             </div>
                         </ApplicationText>
 
-                        <AdditionalBankSection>
+                        <BankSection>
                             <Title size={5} bottomGap="12px">
-                                Выберите дополнительный банк (необязательно):
+                                Выберите банк:
                             </Title>
-                            {!additionalBank ? (
-                                ' '
-                            ) : (
-                                <p style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
-                                    Для отмены выбраного банка, нажмите на кнопку повторно.
-                                </p>
-                            )}
                             <BankOptions>
-                                {BANK_OPTIONS.filter((bank) => bank.id !== 'vtb').map((bank) => (
+                                {BANK_OPTIONS.map((bank) => (
                                     <BankOption
                                         key={bank.id}
-                                        selected={additionalBank === bank.id}
-                                        onClick={() => handleAdditionalBankChange(bank.id)}
+                                        selected={selectedBank === bank.id}
+                                        onClick={() => handleBankChange(bank.id)}
                                     >
                                         <div className="bank-icon">
                                             <img
@@ -398,7 +381,7 @@ const CardRequestForm: React.FC = () => {
                                     </BankOption>
                                 ))}
                             </BankOptions>
-                        </AdditionalBankSection>
+                        </BankSection>
 
                         <ButtonGroup>
                             <Button
@@ -407,8 +390,9 @@ const CardRequestForm: React.FC = () => {
                                 background="var(--reallyBlue)"
                                 textColor="white"
                                 loading={isLoading}
-                                isActive={true}
-                                notActiveClickMessage=""
+                                isActive={!!selectedBank}
+                                notActiveClickMessage="Сначала выберите банк"
+
                                 width="100%"
                             />
                         </ButtonGroup>
