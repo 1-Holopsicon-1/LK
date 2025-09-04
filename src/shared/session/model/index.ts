@@ -8,6 +8,7 @@ import { applicationApi, userApi } from '@shared/api'
 import { getRoles } from '@shared/api/allowances/allowances-api'
 import { forceLogout } from '@shared/api/config/utils'
 import { ADName, User, UserToken } from '@shared/api/model'
+import { scienceApi } from '@shared/api/science'
 import { LoginData } from '@shared/api/user-api'
 import { TUTORIAL_HASH, TUTORIAL_PROGRESS, TUTORIAL_PROGRESS_DATE, TUTORIAL_PROGRESS_HASH } from '@shared/consts'
 import { BrowserStorageKey } from '@shared/consts/browser-storage-key'
@@ -174,6 +175,13 @@ sample({
     source: $userRole,
     filter: (role) => role === 'staff',
     target: roleQuery.start,
+})
+
+sample({
+    clock: authenticated,
+    source: $userRole,
+    filter: (role) => role === 'staff',
+    target: scienceApi.getRolesQuery.start,
 })
 
 //getUserTokenFx

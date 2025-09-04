@@ -355,7 +355,7 @@ const CardRequestForm: React.FC = () => {
                                 ) : (
                                     '[выберите банк]'
                                 )}{' '}
-                                в целях оформления банковской карты.
+                                в целях оформления банковской карты.                            
                             </div>
                         </ApplicationText>
 
@@ -392,6 +392,7 @@ const CardRequestForm: React.FC = () => {
                                 loading={isLoading}
                                 isActive={!!selectedBank}
                                 notActiveClickMessage="Сначала выберите банк"
+
                                 width="100%"
                             />
                         </ButtonGroup>

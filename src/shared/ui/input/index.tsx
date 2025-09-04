@@ -20,6 +20,7 @@ const InputWrapper = styled.div<{
     inputAppearance: boolean
     width?: string
     minWidth?: string
+    maxWidth?: string
     danger?: boolean
     size: Size
 }>`
@@ -29,6 +30,7 @@ const InputWrapper = styled.div<{
     position: relative;
     width: ${({ width }) => width ?? '100%'};
     min-width: ${({ minWidth, width }) => minWidth ?? width};
+    max-width: ${({ maxWidth }) => maxWidth};
     pointer-events: ${({ isActive }) => !isActive && 'none'};
     opacity: ${({ isActive }) => !isActive && 0.7};
 
@@ -119,6 +121,7 @@ interface Props {
     mask?: boolean
     width?: string
     minWidth?: string
+    maxWidth?: string
     autocomplete?: boolean
     danger?: boolean
     alertMessage?: string
@@ -142,6 +145,7 @@ const Input = forwardRef(function Input(props: Props, ref: ForwardedRef<HTMLInpu
         required,
         width,
         minWidth,
+        maxWidth,
         customMask,
         placeholder = 'Введите сюда',
         type = 'text',
@@ -206,6 +210,7 @@ const Input = forwardRef(function Input(props: Props, ref: ForwardedRef<HTMLInpu
                 required={required}
                 readOnly={!isActive}
                 ref={ref}
+                style={{ maxWidth: maxWidth }}
             />
             {type !== 'password' ? (
                 !!value?.length &&

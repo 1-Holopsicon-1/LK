@@ -60,9 +60,9 @@ export const cardRequestUtils = {
 
     getBankIcon: (bankId: string): string => {
         const icons: Record<string, string> = {
-            vtb: '/bank-icons/vtb.svg',
             sber: '/bank-icons/sber.svg',
             alfa: '/bank-icons/alfa.svg',
+            vtb: '/bank-icons/vtb.svg',
         }
         return icons[bankId] || '🏦'
     },
