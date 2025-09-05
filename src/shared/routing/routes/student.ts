@@ -191,7 +191,7 @@ export const studentRoutes: () => IRoutes = () => ({
     },
     'card-request': {
         id: 'card-request',
-        title: 'Выпуск стипендиальной карты первокурсника',
+        title: 'Выпуск стипендиальной карты для первокурсников',
         icon: BiIdCard,
         path: CARD_REQUEST_ROUTE,
         color: 'blue',
