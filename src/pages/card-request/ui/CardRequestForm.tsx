@@ -195,11 +195,11 @@ const CardRequestForm: React.FC = () => {
         'mfnbrx@gmail.com',
         't.t.testov@mospolytech.ru',
     ]
-    /*
-    if (user?.email && !allowedEmails.includes(user.email)) {
-        return <Error text={'Данный раздел находится в разработке или не доступен для вас'} />
+
+    if (user?.course > 1) {
+        return <Error text={'Данный раздел тольько для студентов первго курса'} />
     }
-     */
+
     useEffect(() => {
         getRequest()
     }, [])
@@ -355,7 +355,7 @@ const CardRequestForm: React.FC = () => {
                                 ) : (
                                     '[выберите банк]'
                                 )}{' '}
-                                в целях оформления банковской карты.                            
+                                в целях оформления банковской карты.
                             </div>
                         </ApplicationText>
 
@@ -392,7 +392,6 @@ const CardRequestForm: React.FC = () => {
                                 loading={isLoading}
                                 isActive={!!selectedBank}
                                 notActiveClickMessage="Сначала выберите банк"
-
                                 width="100%"
                             />
                         </ButtonGroup>
