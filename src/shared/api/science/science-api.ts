@@ -236,6 +236,22 @@ export type FractionShareStats = {
     fractionShare: number
 }
 
+export type PublicationStatisticsParams = {
+    startYear: number
+    endYear: number
+    limit: number
+    offset: number
+    facultyId?: string
+    departmentId?: string
+}
+
+export type PublicationStatistics = {
+    id: string
+    name: string
+    publicationCount: number
+    activeAuthorsCount: number
+}
+
 export type Subdivision = {
     guid: string
     name: string
@@ -317,6 +333,27 @@ export const getAuthorStats = async (params: FractionShareStatsParams) => {
         return Array.isArray(actualData) ? actualData : []
     } catch (error) {
         console.error('Error fetching author stats:', error)
+        return []
+    }
+}
+
+export const getPublicationStatistics = async (params: PublicationStatisticsParams) => {
+    try {
+        const response = await $scienceApi.get('/publications/stats', {
+            params: {
+                StartYear: params.startYear,
+                EndYear: params.endYear,
+                Limit: params.limit,
+                Offset: params.offset,
+                FacultyId: params.facultyId,
+                DepartmentId: params.departmentId,
+            },
+        })
+        
+        const actualData = response.data?.data || response.data
+        return Array.isArray(actualData) ? actualData : []
+    } catch (error) {
+        console.error('Error fetching publication statistics:', error)
         return []
     }
 }

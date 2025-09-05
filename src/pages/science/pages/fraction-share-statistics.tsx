@@ -5,15 +5,17 @@ import { createEffect, createEvent, createStore } from 'effector'
 import { useUnit } from 'effector-react'
 import styled from 'styled-components'
 
+import { LeftSide } from '@features/change-password/styles'
+
 import {
     FractionShareStats,
     FractionShareStatsParams,
     Subdivision,
     getAuthorStats,
     getDepartmentStats,
+    getDepartments,
     getFaculties,
     getFacultyStats,
-    getDepartments,
 } from '@shared/api/science/science-api'
 import { Button } from '@shared/ui/button'
 import Input from '@shared/ui/input'
@@ -48,7 +50,7 @@ const TabButton = styled.button<{ isActive: boolean }>`
     font-weight: 500;
     transition: all 0.3s;
     border-radius: 8px 8px 0 0;
-
+    margin-right: 0.5rem;
     &:hover {
         background: ${(props) => (props.isActive ? 'var(--reallyBlue)' : 'var(--theme-2)')};
     }
@@ -91,9 +93,9 @@ const YearControlsWrapper = styled.div`
     gap: 8px;
 
     /* Убираем встроенные стрелочки у input[type="number"] */
-    input[type="number"] {
+    input[type='number'] {
         -moz-appearance: textfield; /* Firefox */
-        
+
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
             -webkit-appearance: none; /* Chrome, Safari, Edge */
@@ -168,7 +170,6 @@ const Table = styled.table`
 const TableHeader = styled.th`
     background: var(--theme-2);
     padding: 16px;
-    text-align: left;
     font-weight: 600;
     color: var(--text);
     border-bottom: 1px solid var(--theme-3);
@@ -195,8 +196,7 @@ const TableRow = styled.tr`
         background: var(--theme-2);
     }
 
-    transition:
-        background-color 0.3s;
+    transition: background-color 0.3s;
 `
 
 const TableCell = styled.td`
@@ -267,8 +267,8 @@ const fetchDepartmentStatsFx = createEffect<FractionShareStatsParams, FractionSh
 const fetchAuthorStatsFx = createEffect<FractionShareStatsParams, FractionShareStats[]>(getAuthorStats)
 
 const fetchFacultiesFx = createEffect<string | undefined, Subdivision[]>(getFaculties)
-const fetchDepartmentsFx = createEffect<{ name?: string; facultyId?: string }, Subdivision[]>(
-    ({ name, facultyId }) => getDepartments(name, facultyId)
+const fetchDepartmentsFx = createEffect<{ name?: string; facultyId?: string }, Subdivision[]>(({ name, facultyId }) =>
+    getDepartments(name, facultyId),
 )
 
 const setActiveTab = createEvent<TabType>()
@@ -309,7 +309,7 @@ const FractionShareStatistics = () => {
         departmentLoading,
         authorLoading,
         facultiesLoading,
-        departmentsLoading
+        departmentsLoading,
     ] = useUnit([
         $activeTab,
         $facultyStats,
@@ -404,7 +404,7 @@ const FractionShareStatistics = () => {
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page)
-        
+
         // Создаем параметры с новой страницей
         const params: FractionShareStatsParams = {
             startYear: parseInt(startYear),
@@ -434,7 +434,7 @@ const FractionShareStatistics = () => {
     const handleStartYearChange = (increment: number) => {
         const newYear = parseInt(startYear) + increment
         const currentYear = new Date().getFullYear()
-        
+
         // Ограничиваем диапазон от 2000 до текущего года
         if (newYear >= 2000 && newYear <= currentYear && newYear <= parseInt(endYear)) {
             setStartYear(String(newYear))
@@ -444,7 +444,7 @@ const FractionShareStatistics = () => {
     const handleEndYearChange = (increment: number) => {
         const newYear = parseInt(endYear) + increment
         const currentYear = new Date().getFullYear()
-        
+
         // Ограничиваем диапазон от стартового года до текущего + 10 лет
         if (newYear >= parseInt(startYear) && newYear <= currentYear + 10) {
             setEndYear(String(newYear))
@@ -465,16 +465,16 @@ const FractionShareStatistics = () => {
         if (searchTimeout) {
             clearTimeout(searchTimeout)
         }
-        
+
         const timeout = setTimeout(() => {
             // Автоматический поиск для текущей вкладки при изменении названия
             if (name.trim().length > 0 || name === '') {
                 handleSearch()
             }
         }, 500) // Больше задержка для основного поиска
-        
+
         setSearchTimeout(timeout)
-        
+
         return () => {
             if (timeout) {
                 clearTimeout(timeout)
@@ -489,13 +489,13 @@ const FractionShareStatistics = () => {
         } else {
             fetchDepartmentsFx({})
         }
-        
+
         // Автоматически обновляем статистику при изменении факультета
         if (activeTab === 'department' || activeTab === 'author') {
             const timeout = setTimeout(() => {
                 handleSearch()
             }, 300) // Небольшая задержка чтобы кафедры успели загрузиться
-            
+
             return () => clearTimeout(timeout)
         }
     }, [selectedFaculty])
@@ -511,7 +511,7 @@ const FractionShareStatistics = () => {
             const timeout = setTimeout(() => {
                 handleSearch()
             }, 100)
-            
+
             return () => clearTimeout(timeout)
         }
     }, [selectedDepartment])
@@ -534,11 +534,7 @@ const FractionShareStatistics = () => {
 
     return (
         <PageWrapper>
-            <Title size={1} align="left" bottomGap={false}>
-                Статистика Fraction Share
-            </Title>
-
-            <TabsContainer>
+            <TabsContainer style={{ marginTop: '4rem' }}>
                 <TabButton isActive={activeTab === 'faculty'} onClick={() => handleTabChange('faculty')}>
                     Факультеты
                 </TabButton>
@@ -575,8 +571,8 @@ const FractionShareStatistics = () => {
                                 getOptionLabel={(option) => option.name}
                                 isOptionEqualToValue={(option, value) => option.guid === value.guid}
                                 filterOptions={(options, { inputValue }) => {
-                                    return options.filter(option =>
-                                        option.name.toLowerCase().includes(inputValue.toLowerCase())
+                                    return options.filter((option) =>
+                                        option.name.toLowerCase().includes(inputValue.toLowerCase()),
                                     )
                                 }}
                                 loading={facultiesLoading}
@@ -628,8 +624,8 @@ const FractionShareStatistics = () => {
                                 getOptionLabel={(option) => option.name}
                                 isOptionEqualToValue={(option, value) => option.guid === value.guid}
                                 filterOptions={(options, { inputValue }) => {
-                                    return options.filter(option =>
-                                        option.name.toLowerCase().includes(inputValue.toLowerCase())
+                                    return options.filter((option) =>
+                                        option.name.toLowerCase().includes(inputValue.toLowerCase()),
                                     )
                                 }}
                                 loading={departmentsLoading}
@@ -637,7 +633,9 @@ const FractionShareStatistics = () => {
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
-                                        placeholder={selectedFaculty ? "Выберите кафедру" : "Сначала выберите факультет"}
+                                        placeholder={
+                                            selectedFaculty ? 'Выберите кафедру' : 'Сначала выберите факультет'
+                                        }
                                         variant="outlined"
                                         size="small"
                                         sx={{
@@ -722,8 +720,8 @@ const FractionShareStatistics = () => {
                                 <Table>
                                     <thead>
                                         <tr>
-                                            <TableHeader>Название</TableHeader>
-                                            <TableHeader>Fraction Share</TableHeader>
+                                            <TableHeader style={{ textAlign: 'left' }}>Название</TableHeader>
+                                            <TableHeader style={{ textAlign: 'right' }}>Fraction Share</TableHeader>
                                         </tr>
                                     </thead>
                                     <tbody>
